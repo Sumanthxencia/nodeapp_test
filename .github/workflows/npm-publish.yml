@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.AZURE_USERNAME }}
           password: ${{ secrets.AZURE_PASSWORD }}
       - name: Build Docker image
-        run: docker build -t .
+        run: docker build -t mydemoapp
       - name: Push Docker image to Azure Container Registry
         run: |
             docker tag mydemoapp:latest ${{ secrets.ACR_REGISTRY_NAME }}.azurecr.io/mydemoapp:${{ github.sha }}
