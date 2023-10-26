@@ -16,7 +16,7 @@ jobs:
     - name: Login to Azure Container Registry
       uses: docker/login-action@v1
       with:
-        registry: <ACRforNODEJSapp>.azurecr.io
+        registry: ACRforNODEJSapp.azurecr.io
         username: ${{ secrets.AZURE_USERNAME }}
         password: ${{ secrets.AZURE_PASSWORD }}
 
@@ -25,4 +25,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: <ACRforNODEJSapp>.azurecr.io/<NODEJSappimage>:latest
+        tags: ACRforNODEJSapp.azurecr.io/NODEJSappimage:latest
