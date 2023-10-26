@@ -3,15 +3,12 @@ on:
   push:
     branches:
       - master
-
 jobs:
   push-to-azure-container-registry:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
-        with:
-          node-version: 16
       - run: npm ci
       - run: npm build
       - name: Login to Azure Container Registry
@@ -20,10 +17,8 @@ jobs:
           login-server: ${{ secrets.ACR_REGISTRY_NAME }}.azurecr.io
           username: ${{ secrets.AZURE_USERNAME }}
           password: ${{ secrets.AZURE_PASSWORD }}
-
       - name: Build Docker image
         run: docker-compose build
-
       - name: Push Docker image to Azure Container Registry
         run: |
             docker tag mydemoapp:latest ${{ secrets.ACR_REGISTRY_NAME }}.azurecr.io/mydemoapp:${{ github.sha }}
