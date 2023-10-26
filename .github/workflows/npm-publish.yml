@@ -19,10 +19,10 @@ jobs:
       - name: Build and push Docker image
       - run: docker build .
       - run: docker push ${{ secrets.ACR_REGISTRY_NAME }}.azurecr.io
-      - name: docker push 
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.ACR_REGISTRY_NAME }}.azurecr.io
-          username: ${{ secrets.AZURE_USERNAME }}
-          password: ${{ secrets.AZURE_PASSWORD }}
+      #- name: docker push 
+       # uses: azure/docker-login@v1
+      #  with:
+       #   login-server: ${{ secrets.ACR_REGISTRY_NAME }}.azurecr.io
+       #   username: ${{ secrets.AZURE_USERNAME }}
+     #     password: ${{ secrets.AZURE_PASSWORD }}
                  
