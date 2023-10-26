@@ -10,7 +10,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@master
       - run: npm ci
-      - run: npm build
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
