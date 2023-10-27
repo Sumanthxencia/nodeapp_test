@@ -29,13 +29,10 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Deploy Container App
+      - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          login-server: ${{ secrets.ACR_REGISTRY_NAME }}
-          username: ${{ secrets.AZURE_USERNAME }}
-          password: ${{ secrets.AZURE_PASSWORD }}
-          containerAppName: nodeappcontainer
-          resourceGroup: ACRforNODEJSapp-RG
-          imageToDeploy:  acrfornodejsapp.azurecr.io/nodeapp:${{ github.sha }}
-
+         appSourcePath: ${{ github.workspace }}
+         acrName: acrfornodejsapp
+         containerAppName: nodeappcontainer
+         resourceGroup: ACRforNODEJSapp-RG
