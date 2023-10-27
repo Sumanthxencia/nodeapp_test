@@ -25,4 +25,11 @@ jobs:
       - run: |
             docker build . -t ${{ secrets.ACR_REGISTRY_NAME }}/nodeapp:${{ github.sha }}
             docker push ${{ secrets.ACR_REGISTRY_NAME }}/nodeapp:${{ github.sha }}
+      - name: Deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName: acrfornodejsapp
+          containerAppName: nodeappcontainer
+          resourceGroup: ACRforNODEJSapp-RG
+          imageToDeploy:  acrfornodejsapp.azurecr.io/nodeapp:${{ github.sha }}
 
