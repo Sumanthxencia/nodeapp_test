@@ -1,38 +1,46 @@
-name: Push to Azure Container Registry
+name: Node.js Docker Image 
+
 on:
   push:
     branches:
       - master
+
 jobs:
-  push-to-azure-container-registry:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@master
-      - run: npm ci
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
       - name: Login to Azure Container Registry
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.ACR_REGISTRY_NAME }}
-          username: ${{ secrets.AZURE_USERNAME }}
-          password: ${{ secrets.AZURE_PASSWORD }}
-      - name: 'Build and push image'
-        uses: azure/docker-login@v1
-        with:
-            login-server: ${{ secrets.ACR_REGISTRY_NAME }}
-            username: ${{ secrets.AZURE_USERNAME }}
-            password: ${{ secrets.AZURE_PASSWORD }}
-      - run: |
-            docker build . -t ${{ secrets.ACR_REGISTRY_NAME }}/nodeapp:${{ github.sha }}
-            docker push ${{ secrets.ACR_REGISTRY_NAME }}/nodeapp:${{ github.sha }}
-      - name: Log in to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: deploy Container App
-        uses: azure/container-apps-deploy-action@v1
-        with:
-         appSourcePath: ${{ github.workspace }}
-         acrName: acrfornodejsapp
-         containerAppName: nodeappcontainer
-         resourceGroup: ACRforNODEJSapp-RG
+        run: |
+          az login --service-principal -u ${{ secrets.d5f90776-5356-4bbf-be8f-6530a9289d81 }} -p ${{ secrets.98b82679-f4e2-4c4a-95a9-4f5d57f95703 }} --tenant ${{ secrets.75f2a99b-01fd-48f2-ac60-d4a7a44fd0cc }}
+          az acr login --name acrfornodejsapp
+        env:
+          AZURE_SERVICE_PRINCIPAL_ID: ${{ secrets.d5f90776-5356-4bbf-be8f-6530a9289d81 }}
+          AZURE_SERVICE_PRINCIPAL_SECRET: ${{ secrets.98b82679-f4e2-4c4a-95a9-4f5d57f95703 }}
+          AZURE_TENANT_ID: ${{ secrets.75f2a99b-01fd-48f2-ac60-d4a7a44fd0cc }}
+
+      - name: Build and tag Docker image
+        run: |
+          docker build -t acrfornodejsapp.azurecr.io/nodeapp2:latest .
+        working-directory: ./path/to/your/nodejs/app
+
+      - name: Push Docker image to Azure Container Registry
+        run: |
+          docker push acrfornodejsapp.azurecr.io/nodeapp2:latest
+        working-directory: ./path/to/your/nodejs/app
+
+      - name: Deploy to Azure Container App
+        run: |
+          az containerapp deploy --name nodeappcontainer --image acrfornodejsapp.azurecr.io/nodeapp2:latest
+        env:
+          AZURE_CONTAINERAPP_KEY: ${{ secrets.AZURE_CONTAINERAPP_KEY }}
+
+# Don't forget to set up the necessary secrets in your GitHub repository for the Azure Service Principal and Azure Container App
