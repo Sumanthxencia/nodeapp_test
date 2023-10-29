@@ -1,9 +1,9 @@
-name: Node.js Docker Image 
+name: Node.js Docker Image CI/CD
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-deploy:
@@ -20,22 +20,22 @@ jobs:
 
       - name: Login to Azure Container Registry
         run: |
-          az login --service-principal -u ${{ secrets.d5f90776-5356-4bbf-be8f-6530a9289d81 }} -p ${{ secrets.98b82679-f4e2-4c4a-95a9-4f5d57f95703 }} --tenant ${{ secrets.75f2a99b-01fd-48f2-ac60-d4a7a44fd0cc }}
+          az login --service-principal -u ${{ secrets.AZURE_SERVICE_PRINCIPAL_ID }} -p ${{ secrets.AZURE_SERVICE_PRINCIPAL_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
           az acr login --name acrfornodejsapp
         env:
-          AZURE_SERVICE_PRINCIPAL_ID: ${{ secrets.d5f90776-5356-4bbf-be8f-6530a9289d81 }}
-          AZURE_SERVICE_PRINCIPAL_SECRET: ${{ secrets.98b82679-f4e2-4c4a-95a9-4f5d57f95703 }}
-          AZURE_TENANT_ID: ${{ secrets.75f2a99b-01fd-48f2-ac60-d4a7a44fd0cc }}
+          AZURE_SERVICE_PRINCIPAL_ID: ${{ secrets.AZURE_SERVICE_PRINCIPAL_ID }}
+          AZURE_SERVICE_PRINCIPAL_SECRET: ${{ secrets.AZURE_SERVICE_PRINCIPAL_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Build and tag Docker image
         run: |
           docker build -t acrfornodejsapp.azurecr.io/nodeapp2:latest .
-        working-directory: ./path/to/your/nodejs/app
+        working-directory: ./
 
       - name: Push Docker image to Azure Container Registry
         run: |
           docker push acrfornodejsapp.azurecr.io/nodeapp2:latest
-        working-directory: ./path/to/your/nodejs/app
+        working-directory: ./
 
       - name: Deploy to Azure Container App
         run: |
