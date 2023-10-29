@@ -1,4 +1,4 @@
-name: Node.js Docker Image CI/CD
+name: Node.js Docker Image CICD
 
 on:
   push:
@@ -43,4 +43,4 @@ jobs:
         env:
           AZURE_CONTAINERAPP_KEY: ${{ secrets.AZURE_CONTAINERAPP_KEY }}
 
-# Don't forget to set up the necessary secrets in your GitHub repository for the Azure Service Principal and Azure Container App
+
