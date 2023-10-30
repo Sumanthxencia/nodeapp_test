@@ -39,7 +39,7 @@ jobs:
 
       - name: Deploy to Azure Container App
         run: |
-          az containerapp deploy --name nodeappcontainer --image acrfornodejsapp.azurecr.io/nodeapp2:latest
+          az containerapp deployment --name nodeappcontainer --image acrfornodejsapp.azurecr.io/nodeapp2:latest
         env:
           AZURE_CONTAINERAPP_KEY: ${{ secrets.AZURE_CONTAINERAPP_KEY }}
 
