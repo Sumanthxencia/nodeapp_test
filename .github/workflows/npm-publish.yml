@@ -38,7 +38,7 @@ jobs:
         working-directory: ./
       - name: Deploy to Azure Container App
         run: |
-          az containerapp --name containerappfornode --image acrfornode.azurecr.io/nodeapp2:latest
+          az containerapp deploy --name containerappfornode --image acrfornode.azurecr.io/nodeapp2:latest
         env:
           AZURE_CONTAINERAPP_KEY: ${{ secrets.AZURE_CONTAINERAPP_KEY }}
      
