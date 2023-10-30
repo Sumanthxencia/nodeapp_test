@@ -38,8 +38,18 @@ jobs:
         working-directory: ./
       - name: Deploy to Azure Container App
         run: |
-          az containerapp deploy --name containerappfornode --image acrfornode.azurecr.io/nodeapp2:latest
+          az login --service-principal -u ${{ secrets.AZURE_SERVICE_PRINCIPAL_ID }} -p ${{ secrets.AZURE_SERVICE_PRINCIPAL_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+          az login --name containerappfornode
         env:
-          AZURE_CONTAINERAPP_KEY: ${{ secrets.AZURE_CONTAINERAPP_KEY }}
-
+          AZURE_SERVICE_PRINCIPAL_ID: ${{ secrets.AZURE_SERVICE_PRINCIPAL_ID }}
+          AZURE_SERVICE_PRINCIPAL_SECRET: ${{ secrets.AZURE_SERVICE_PRINCIPAL_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          uses: azure/container-apps-deploy-action@v1
+           with:
+            acrName: acrfornode
+            containerAppName: containerappfornode
+            resourceGroup: ACRforNODEJSapp-RG
+            imageToDeploy: acrfornode.azurecr.io/nodeapp2:${{ github.sha }}
+     
+        
 
