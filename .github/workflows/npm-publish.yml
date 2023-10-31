@@ -36,10 +36,10 @@ jobs:
         run: |
           docker push acrfornode.azurecr.io/nodeapp2:latest
         working-directory: ./
-      - name: Log in to Azure
-        uses: azure/login@v1
-        with:
-         creds: ${{ secrets.AZURE_CREDENTIALS }}
+      #- name: Log in to Azure
+       # uses: azure/login@v1
+      #  with:
+       #  creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name:  deploy to Container App
         uses: azure/container-apps-deploy-action@v1
         with:
