@@ -46,7 +46,7 @@ jobs:
            acrName: acrfornode
            containerAppName: containerappfornode
            resourceGroup: ACRforNODEJSapp-RG
-           imageToDeploy: acrfornode.azurecr.io/nodeapp2:${{ github.sha }}
+           imageToDeploy: acrfornode.azurecr.io/nodeapp2:latest
      
         
 
