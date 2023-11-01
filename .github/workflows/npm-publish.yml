@@ -44,7 +44,7 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
            acrName: acrfornode
-           containerAppName: containerappfornode
+           containerAppName: devapp2
            resourceGroup: ACRforNODEJSapp-RG
            imageToDeploy: acrfornode.azurecr.io/nodeapp2:latest
      
